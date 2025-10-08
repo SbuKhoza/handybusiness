@@ -1,0 +1,231 @@
+/* src/pages/pagestyling/Home.css */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.homecontainer {
+  font-family: "Poppins", sans-serif;
+  color: #222;
+  overflow-x: hidden;
+  /* Removed any default margins/padding */
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Banner Section ===== */
+.bannerSection {
+  position: relative;
+  height: 100vh;
+  /* Ensured full width with no margins */
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.bannerSlider,
+.slick-slider,
+.slick-list,
+.slick-track,
+.bannerSlide {
+  height: 100%;
+  /* Ensured slider components are full width */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.bannerImage {
+  height: 100vh;
+  width: 100%;
+  object-fit: cover;
+  /* Removed any potential spacing */
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dots styling (optional, nice modern look) */
+.slick-dots {
+  bottom: 20px;
+}
+.slick-dots li button:before {
+  color: #fff;
+  opacity: 0.6;
+}
+.slick-dots li.slick-active button:before {
+  color: #f4b400;
+  opacity: 1;
+}
+
+/* Overlay Content */
+.bannerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Added top padding to account for navbar height */
+  padding: 8% 5% 5% 5%;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.169); /* tint */
+}
+
+/* Text Section */
+.textSection {
+  max-width: 50%;
+}
+
+.textSection h4 {
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.7),
+    0 0 3px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+
+.textSection h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.textSection p {
+  font-size: 1rem;
+  color: #f0f0f0;
+  line-height: 1.6;
+}
+
+.homeActionButtons {
+  margin-top: 2rem;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.primaryBtn {
+  background: #f4b400;
+  color: #000;
+  margin-right: 1rem;
+}
+
+.primaryBtn:hover {
+  background: #e2a200;
+}
+
+.secondaryBtn {
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.secondaryBtn:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* Right Image */
+.rightImageWrapper {
+  position: absolute;
+  top: 50%;              /* keeps it vertically centered */
+  right: 5%;             /* fixed distance from the right edge */
+  transform: translateY(-50%);
+  width: 500px;          /* fixed width */
+  height: 550px;         /* fixed height */
+  text-align: right;
+  z-index: 3;
+}
+
+
+
+.rightImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-right-radius: 5%;
+  border-top-left-radius: 10%;
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); */
+}
+
+
+
+/* ===== Responsive ===== */
+
+@media screen and (max-width: 1200px) {
+  .rightImageWrapper {
+    position: absolute;
+  top: 50%;              /* keeps it vertically centered */
+  right: 5%;             /* fixed distance from the right edge */
+  transform: translateY(-50%);
+  width: 450px;          /* fixed width */
+  height: 500px;         /* fixed height */
+  text-align: right;
+  z-index: 3;
+}
+
+
+
+
+@media screen and (max-width: 992px) {
+  .bannerOverlay {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .textSection {
+    max-width: 100%;
+  }
+
+  .rightImageWrapper {
+    margin-top: 2rem;
+  }
+
+  .textSection h1 {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .rightImageWrapper {
+  display: none;
+  }
+  
+}
+
+@media screen and (max-width: 600px) {
+  .textSection h1 {
+    font-size: 1.8rem;
+    
+  }
+
+  .rightImageWrapper {
+  display: none;
+  }
+
+  .textSection h4 {
+    font-size: 1rem;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+  }
+}
+}

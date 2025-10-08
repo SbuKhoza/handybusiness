@@ -1,0 +1,134 @@
+/* Navbar Base */
+.navbar {
+  width: 100%;
+  /* Made navbar transparent with dark overlay to blend with banner */
+  background-color: rgba(0, 0, 0, 0);
+  border-bottom: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+/* Logo */
+.logo-image {
+  height: 70px;
+  width: auto;
+}
+
+.logo-text {
+   color: #ffffff; /* or any color you prefer */
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.logo-text a,
+.logo-text a:visited,
+.logo-text a:active,
+.logo-text a:hover,
+.logo-text a:focus {
+  color: inherit;        /* keeps the same color */
+  text-decoration: none; /* removes underline and other decorations */
+}
+
+/* Navigation Links */
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  /* Changed text color to white for visibility on dark navbar */
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-menu li a:hover {
+  /* Changed hover color to orange/yellow to match electrical theme */
+  color: #f4b400;
+}
+
+/* Hamburger Menu (Hidden by Default on Desktop) */
+.menu-icon {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  /* Changed bar color to white for visibility */
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.bar.open {
+  background-color: #f4b400;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .menu-icon {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    /* Made mobile menu dark to match navbar */
+    background-color: rgba(0, 0, 0, 0.95);
+    width: 200px;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 1rem;
+    display: none;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-menu li {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .nav-menu li a {
+    width: 100%;
+    display: block;
+    padding: 0.5rem 0;
+    color: #ffffff;
+  }
+
+  /* Mobile screen Logo */
+  .logo-image {
+    height: 55px;
+    width: auto;
+  }
+}
+
+/* Tablet & Small Desktop Tweaks */
+@media screen and (max-width: 1024px) {
+  .navbar-container {
+    padding: 0.75rem 1.5rem;
+  }
+}

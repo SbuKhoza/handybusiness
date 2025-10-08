@@ -1,0 +1,366 @@
+/* Services Container */
+.servicescontainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  background-color: transparent;
+}
+
+/* Header Section */
+.servicestext {
+  text-align: center;
+  margin-bottom: 50px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+#servicesheadertext {
+  color: #ff5722;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  animation: fadeIn 1s ease-out;
+}
+
+#serviceslogan {
+  color: #1a1a1a;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: balance;
+}
+
+#servicesshortdescription {
+  color: #666;
+  font-size: 18px;
+  line-height: 1.6;
+  display: block;
+  max-width: 800px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+
+/* Services Grid */
+.servicesdescription {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Individual Service Card - Added relative positioning for overlapping effect */
+.servdescript {
+  background-color: transparent;
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow: none;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.servdescript:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.servdescript:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.servdescript:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* .servdescript:hover {
+  transform: translateY(-8px);
+} */
+
+/* Service Image */
+.servdescript img {
+  width: 95%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* .servdescript:hover img {
+  transform: scale(1.05);
+} */
+
+/* Reduced padding and adjusted margins to align right edge with image */
+.service-content {
+  background-color: #fdf5f5;
+  position: relative;
+  width: 85%;
+  align-self: flex-end;
+  /*width: calc(95% - 5%);/* /* Matches the image width (95%) */
+  margin-top: -30px;
+  /*margin-left: auto;*/     /* Align right edge with image */
+  margin-right: 5%;
+  padding: 20px 10px;
+  z-index: 2;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06); */
+  transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* .servdescript:hover .service-content {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
+} */
+
+/* Reduced icon size and margins for tighter spacing */
+.service-icon {
+  color: #ff5722;
+  font-size: 28px; /* Reduced from 32px */
+  margin: 0 0 10px 0; /* Reduced bottom margin from 6px to 4px */
+  transition: transform 0.3s ease, color 0.3s ease;
+  line-height: 1;
+}
+
+/* .servdescript:hover .service-icon {
+  transform: scale(1.1) rotate(5deg);
+  color: #ff6f3c;
+} */
+
+/* Reduced title margins for tighter spacing */
+.service-title {
+  color: #1a1a1a;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px 0; /* Reduced bottom margin from 8px to 4px */
+  line-height: 1.2;
+  transition: color 0.3s ease;
+  text-wrap: balance;
+}
+
+.servdescript:hover .service-title {
+  color: #ff5722;
+}
+
+.servdescript p,
+.servdescript h5 {
+  padding: 0;
+}
+
+.servdescript h3,
+.servdescript h4,
+.servdescript h5 {
+  color: #1a1a1a;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px 0; /* Reduced from 8px */
+  line-height: 1.2;
+}
+
+/* Reduced description margins and line-height for tighter spacing */
+#servicedescription {
+  color: #555;
+  text-align: start;
+  font-size: 16px;
+  line-height: 1.3; /* Reduced from 1.4 */
+  margin: 4px 0; /* Reduced from 8px 0 */
+  flex-grow: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced top margin for price to bring it closer to description */
+#servicehire {
+  color: #ff5722;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 10px 0 0 0; /* Reduced top margin */
+  padding-bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.servdescript:hover #servicehire {
+  color: #ff3d00;
+  transform: translateX(3px);
+}
+
+.servdescript:focus-within {
+  outline: 2px solid #ff5722;
+  outline-offset: 4px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet View - 2 columns */
+@media (max-width: 992px) {
+  .service-content {
+    width: calc(95% - 5%);
+    margin-top: -22px;
+    margin-left: auto;
+    margin-right: 0;
+    padding: 10px 12px;
+  }
+
+  #serviceslogan {
+    font-size: 36px;
+  }
+
+  #servicesshortdescription {
+    font-size: 16px;
+  }
+
+  .servicescontainer {
+    padding: 50px 20px;
+  }
+}
+
+/* Mobile View - 1 column */
+@media (max-width: 768px) {
+  .servicesdescription {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  #serviceslogan {
+    font-size: 32px;
+  }
+
+  #servicesshortdescription {
+    font-size: 16px;
+  }
+
+  .servicescontainer {
+    padding: 40px 15px;
+  }
+
+  .servicestext {
+    margin-bottom: 35px;
+  }
+
+  .servdescript img {
+    height: 180px;
+  }
+
+  /* Adjusted for mobile with right edge alignment */
+  .service-content {
+    margin: -25px 0 0 12px; /* Right margin removed for mobile too */
+    padding: 10px 12px; /* Reduced vertical padding */
+  }
+
+  .service-icon {
+    font-size: 26px; /* Reduced from 28px */
+    margin: 0 0 3px 0; /* Reduced from 5px */
+  }
+
+  .service-title {
+    font-size: 18px;
+    margin: 0 0 3px 0; /* Reduced from 6px */
+    line-height: 1.2;
+  }
+
+  #servicedescription {
+    line-height: 1.3;
+    margin: 3px 0; /* Reduced from 6px */
+  }
+
+  #servicehire {
+    margin: 3px 0 0 0; /* Reduced top margin */
+    padding-bottom: 0;
+  }
+}
+
+/* Small Mobile View */
+@media (max-width: 480px) {
+  #serviceslogan {
+    font-size: 28px;
+  }
+
+  #servicesheadertext {
+    font-size: 12px;
+  }
+
+  #servicesshortdescription {
+    font-size: 15px;
+  }
+
+  .servdescript img {
+    height: 180px;
+  }
+
+  /* Further adjusted for small mobile with right edge alignment */
+  .service-content {
+    margin: -20px 0 0 10px; /* Right margin removed */
+    padding: 8px 10px; /* Reduced vertical padding */
+  }
+
+  #servicedescription {
+    font-size: 14px;
+    line-height: 1.3;
+    margin: 3px 0; /* Reduced spacing */
+  }
+
+  #servicehire {
+    font-size: 15px;
+    margin: 3px 0 0 0; /* Reduced top margin */
+  }
+
+  .service-icon {
+    font-size: 24px; /* Reduced from 26px */
+    margin: 0 0 2px 0; /* Reduced from 4px */
+  }
+
+  .service-title {
+    font-size: 17px;
+    margin: 0 0 2px 0; /* Reduced from 5px */
+    line-height: 1.2;
+  }
+}
+
+/* No services message */
+.servicesdescription p {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #999;
+  font-size: 20px;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  /* padding: 30px 10px; */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

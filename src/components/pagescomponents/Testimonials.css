@@ -1,0 +1,148 @@
+.testimonialsContainer {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #fafafa;
+  color: #222;
+}
+
+.testimonialHeader {
+  margin-bottom: 2rem;
+}
+
+.averageRatingDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0.5rem 0;
+}
+
+.starDisplay .star {
+  font-size: 1.8rem;
+  color: #ccc;
+  transition: color 0.25s ease;
+}
+
+.starDisplay .star.filled {
+  color: #ffd700;
+}
+
+.rateMeButton,
+.viewMoreButton,
+.submitButton,
+.closeModal {
+  background: linear-gradient(135deg, #fcd600, #ffd633);
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  margin-top: 1rem;
+}
+
+.rateMeButton:hover,
+.viewMoreButton:hover,
+.submitButton:hover {
+  background: linear-gradient(135deg, #ffe84d, #ffdd33);
+  transform: translateY(-2px);
+}
+
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.testimonialCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.25s ease;
+}
+
+.testimonialCard:hover {
+  transform: translateY(-5px);
+}
+
+.stars {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.reviewText {
+  font-style: italic;
+  color: #555;
+}
+
+/* Modal Styling */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.starsInput {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.starsInput .star {
+  font-size: 2.4rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.2s ease;
+}
+
+.starsInput .star:hover {
+  transform: scale(1.15);
+}
+
+.starsInput .star.filled {
+  color: #ffd700;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  resize: none;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+textarea:focus {
+  border-color: #fcd600;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
