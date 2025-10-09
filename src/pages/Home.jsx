@@ -1,12 +1,11 @@
-// src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
 import { db, auth } from "../firebase/config";
 import { doc, onSnapshot } from "firebase/firestore";
-import Slider from "react-slick"; // ✅ Import slider
+import Slider from "react-slick";
 import Services from "../components/pagescomponents/Services";
 import Testimonials from "../components/pagescomponents/Testimonials";
 import Footer from "../components/pagescomponents/Footer";
-import "slick-carousel/slick/slick.css"; // ✅ Import slick styles
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./pagestyling/Home.css";
 
@@ -19,35 +18,59 @@ function Home() {
     slogan: "The best plumber you need",
     shortDescription:
       "From emergency repairs to complete plumbing services, our certified plumbers deliver safe, reliable, and affordable plumbing solutions for your home and business.",
+    rightImageFit: "cover",
+    taglineColor: "#222222",
+    sloganColor: "#222222",
+    shortDescriptionColor: "#444444",
   });
 
-  // ✅ Watch for auth state
+  const [navbarColors, setNavbarColors] = useState({
+    background: "transparent",
+    links: "#ffffff",
+    logoText: "#ffffff",
+  });
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(setUser);
     return unsubscribe;
   }, []);
 
-  // ✅ Fetch homepage data
   useEffect(() => {
     if (!user) return;
+
+    // Homepage
     const homepageRef = doc(db, "homepage", user.uid);
-    const unsubscribe = onSnapshot(homepageRef, (docSnap) => {
+    const unsubscribeHome = onSnapshot(homepageRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
-        setHomeData({
+        setHomeData((prev) => ({
+          ...prev,
           ...data,
           bannerImages: Array.isArray(data.bannerImages)
             ? data.bannerImages
             : data.bannerImage
             ? [data.bannerImage]
             : [],
-        });
+          rightImageFit: data.rightImageFit || "cover",
+          taglineColor: data.taglineColor || "#222222",
+          sloganColor: data.sloganColor || "#222222",
+          shortDescriptionColor: data.shortDescriptionColor || "#444444",
+        }));
       }
     });
-    return unsubscribe;
+
+    // Navbar colors
+    const navbarRef = doc(db, "navbarColors", user.uid);
+    const unsubscribeNav = onSnapshot(navbarRef, (docSnap) => {
+      if (docSnap.exists()) setNavbarColors(docSnap.data());
+    });
+
+    return () => {
+      unsubscribeHome();
+      unsubscribeNav();
+    };
   }, [user]);
 
-  // ✅ Safe fallback images
   const bannerImages =
     homeData.bannerImages && homeData.bannerImages.length > 0
       ? homeData.bannerImages
@@ -56,7 +79,6 @@ function Home() {
           "https://via.placeholder.com/1600x900?text=Banner+2",
         ];
 
-  // ✅ Slick settings
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -71,7 +93,7 @@ function Home() {
 
   return (
     <div className="homecontainer">
-      {/* Banner Section */}
+      {/* Banner */}
       <div className="bannerSection">
         <Slider {...sliderSettings} className="bannerSlider">
           {bannerImages.map((img, i) => (
@@ -81,12 +103,13 @@ function Home() {
           ))}
         </Slider>
 
-        {/* Overlay Content */}
         <div className="bannerOverlay">
           <div className="textSection">
-            <h4>{homeData.tagline}</h4>
-            <h1>{homeData.slogan}</h1>
-            <p>{homeData.shortDescription}</p>
+            <h4 style={{ color: homeData.taglineColor }}>{homeData.tagline}</h4>
+            <h1 style={{ color: homeData.sloganColor }}>{homeData.slogan}</h1>
+            <p style={{ color: homeData.shortDescriptionColor }}>
+              {homeData.shortDescription}
+            </p>
 
             <div className="homeActionButtons">
               <button className="primaryBtn">Book for a service</button>
@@ -102,20 +125,23 @@ function Home() {
               }
               alt="Right"
               className="rightImage"
+              style={{ objectFit: homeData.rightImageFit || "cover" }}
             />
           </div>
         </div>
       </div>
 
-      {/* Sections Below */}
+      {/* Services */}
       <div className="homeServices">
         <Services />
       </div>
 
+      {/* Testimonials */}
       <div className="homeTestimonials">
         <Testimonials />
       </div>
 
+      {/* Footer */}
       <Footer />
     </div>
   );

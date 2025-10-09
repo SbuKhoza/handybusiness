@@ -241,7 +241,8 @@
 /* Mobile View - 1 column */
 @media (max-width: 768px) {
   .servicesdescription {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
 
@@ -261,7 +262,14 @@
     margin-bottom: 35px;
   }
 
+  .servdescript {
+    width: 100%;
+     margin-right: 5%;
+  padding: 20px 10px;
+  }
+
   .servdescript img {
+    width: 100%;
     height: 180px;
   }
 
@@ -295,6 +303,14 @@
 
 /* Small Mobile View */
 @media (max-width: 480px) {
+
+  .servicesdescription {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+    gap: 15px;
+  }
+
   #serviceslogan {
     font-size: 28px;
   }

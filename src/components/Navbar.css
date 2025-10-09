@@ -11,6 +11,11 @@
   
 }
 
+.navbar-logo a {
+  color: inherit;           /* use the same color as the logo text */
+  text-decoration: none;    /* remove underline */
+}
+
 .navbar-container {
   display: flex;
   align-items: center;
@@ -55,6 +60,7 @@
   color: #ffffff;
   font-weight: 500;
   transition: color 0.3s ease;
+  
 }
 
 .nav-menu li a:hover {

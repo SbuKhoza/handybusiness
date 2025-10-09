@@ -9,7 +9,6 @@ body {
   font-family: "Poppins", sans-serif;
   color: #222;
   overflow-x: hidden;
-  /* Removed any default margins/padding */
   margin: 0;
   padding: 0;
 }
@@ -18,7 +17,6 @@ body {
 .bannerSection {
   position: relative;
   height: 100vh;
-  /* Ensured full width with no margins */
   width: 100vw;
   margin: 0;
   padding: 0;
@@ -31,7 +29,6 @@ body {
 .slick-track,
 .bannerSlide {
   height: 100%;
-  /* Ensured slider components are full width */
   width: 100%;
   margin: 0;
   padding: 0;
@@ -41,13 +38,12 @@ body {
   height: 100vh;
   width: 100%;
   object-fit: cover;
-  /* Removed any potential spacing */
   display: block;
   margin: 0;
   padding: 0;
 }
 
-/* Dots styling (optional, nice modern look) */
+/* Dots styling */
 .slick-dots {
   bottom: 20px;
 }
@@ -71,27 +67,34 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Added top padding to account for navbar height */
   padding: 8% 5% 5% 5%;
   color: #ffffff;
-  background: rgba(0, 0, 0, 0.169); /* tint */
+  background: rgba(0, 0, 0, 0.169);
+  box-sizing: border-box;
 }
 
-/* Text Section */
+/* ===== Text Section ===== */
 .textSection {
   max-width: 50%;
+  position: absolute;
+  left: 0; /* anchor to overlay’s left edge */
+  bottom: 25%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  padding-right: 1rem;
+  margin-left: 2em;
 }
 
 .textSection h4 {
   font-size: 1.3rem;
   color: #ffffff;
   margin-bottom: 0.5rem;
-  text-shadow:
+  /* text-shadow:
     0 0 2px rgba(0, 0, 0, 0.7),
     0 0 3px rgba(0, 0, 0, 0.4),
-    0 1px 2px rgba(0, 0, 0, 0.7);
+    0 1px 2px rgba(0, 0, 0, 0.7); */
 }
-
 
 .textSection h1 {
   font-size: 3rem;
@@ -103,10 +106,17 @@ body {
   font-size: 1rem;
   color: #f0f0f0;
   line-height: 1.6;
+  margin: 0;
 }
 
+/* ===== Buttons ===== */
 .homeActionButtons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
   margin-top: 2rem;
+  gap: 1rem;
 }
 
 .primaryBtn,
@@ -122,7 +132,6 @@ body {
 .primaryBtn {
   background: #f4b400;
   color: #000;
-  margin-right: 1rem;
 }
 
 .primaryBtn:hover {
@@ -140,92 +149,135 @@ body {
   color: #000;
 }
 
-/* Right Image */
+/* ===== Right Image ===== */
 .rightImageWrapper {
   position: absolute;
-  top: 50%;              /* keeps it vertically centered */
-  right: 5%;             /* fixed distance from the right edge */
+  top: 65%;
+  right: 0%;
   transform: translateY(-50%);
-  width: 500px;          /* fixed width */
-  height: 550px;         /* fixed height */
+  width: 500px;
+  height: 550px;
   text-align: right;
   z-index: 3;
 }
-
-
 
 .rightImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-top-right-radius: 5%;
-  border-top-left-radius: 10%;
-  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); */
+  border-top-right-radius: 2%;
+  border-top-left-radius: 60%;
 }
-
-
 
 /* ===== Responsive ===== */
 
 @media screen and (max-width: 1200px) {
   .rightImageWrapper {
-    position: absolute;
-  top: 50%;              /* keeps it vertically centered */
-  right: 5%;             /* fixed distance from the right edge */
-  transform: translateY(-50%);
-  width: 450px;          /* fixed width */
-  height: 500px;         /* fixed height */
-  text-align: right;
-  z-index: 3;
+    width: 450px;
+    height: 500px;
+  }
 }
-
-
-
 
 @media screen and (max-width: 992px) {
   .bannerOverlay {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 3rem 1rem;
   }
 
   .textSection {
-    max-width: 100%;
+    position: relative;
+    left: auto;
+    bottom: auto;
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .textSection h1 {
+    font-size: 2.2rem;
   }
 
   .rightImageWrapper {
     margin-top: 2rem;
+    position: relative;
+    right: auto;
+    transform: none;
   }
 
-  .textSection h1 {
-    font-size: 2rem;
+  .homeActionButtons {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
   }
 }
 
 @media screen and (max-width: 768px) {
   .rightImageWrapper {
-  display: none;
+    display: none;
   }
-  
+
+  .bannerOverlay {
+    width: 100%;
+    margin: 0;
+  }
+
+  .textSection {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .homeActionButtons {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 35%;
+    max-width: 100%;
+    
+  }
 }
 
 @media screen and (max-width: 600px) {
-  .textSection h1 {
-    font-size: 1.8rem;
-    
+  .textSection {
+    width: 100%;
+
   }
 
-  .rightImageWrapper {
-  display: none;
+  .textSection h1 {
+    font-size: 1.8rem;
   }
 
   .textSection h4 {
     font-size: 1rem;
   }
 
+  .homeActionButtons {
+  display: flex;
+  justify-content: center; /* pushes buttons to each end */
+  align-items: center;
+  width: 100vw; /* full screen width */
+  margin-left: calc(-50vw + 50%); /* ensures it breaks out of container padding */
+   /* optional: add breathing room on edges */
+  box-sizing: border-box;
+}
+
+
   .primaryBtn,
   .secondaryBtn {
-    width: 100%;
+    width: 40%;
+    max-width: 100%;
+    padding: 4%;
   }
-}
 }
