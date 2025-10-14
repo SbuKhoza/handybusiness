@@ -1,74 +1,59 @@
-/* Navbar Base */
+/* Base */
 .navbar {
-  width: 100%;
-  /* Made navbar transparent with dark overlay to blend with banner */
-  background-color: rgba(0, 0, 0, 0);
-  border-bottom: none;
-  position: absolute;
+  position: absolute;      /* Overlaps banner */
   top: 0;
   left: 0;
+  width: 100%;
   z-index: 100;
-  
+  background-color: transparent; /* Default transparent */
+  transition: background-color 0.4s ease;
+  box-shadow: none;
 }
 
-.navbar-logo a {
-  color: inherit;           /* use the same color as the logo text */
-  text-decoration: none;    /* remove underline */
-}
-
+/* Inner Container */
 .navbar-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1.2rem 3rem;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1rem 2rem;
 }
 
 /* Logo */
+.logo-text a {
+  font-size: 1.7rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
 .logo-image {
   height: 70px;
   width: auto;
 }
 
-.logo-text {
-   color: #ffffff; /* or any color you prefer */
-  font-size: 1.6rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.logo-text a,
-.logo-text a:visited,
-.logo-text a:active,
-.logo-text a:hover,
-.logo-text a:focus {
-  color: inherit;        /* keeps the same color */
-  text-decoration: none; /* removes underline and other decorations */
-}
-
-/* Navigation Links */
+/* Menu Links */
 .nav-menu {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .nav-menu li a {
   text-decoration: none;
-  /* Changed text color to white for visibility on dark navbar */
-  color: #ffffff;
   font-weight: 500;
+  font-size: 1rem;
   transition: color 0.3s ease;
-  
+  color: #fff;
 }
 
 .nav-menu li a:hover {
-  /* Changed hover color to orange/yellow to match electrical theme */
-  color: #f4b400;
+  color: #f4b400; /* yellow-orange accent */
 }
 
-/* Hamburger Menu (Hidden by Default on Desktop) */
+/* Hamburger */
 .menu-icon {
   display: none;
   flex-direction: column;
@@ -77,18 +62,13 @@
 }
 
 .bar {
-  width: 25px;
+  width: 26px;
   height: 3px;
-  /* Changed bar color to white for visibility */
-  background-color: #ffffff;
+  background-color: #fff;
   transition: all 0.3s ease;
 }
 
-.bar.open {
-  background-color: #f4b400;
-}
-
-/* Responsive Styles */
+/* Responsive Menu */
 @media screen and (max-width: 768px) {
   .menu-icon {
     display: flex;
@@ -96,14 +76,12 @@
 
   .nav-menu {
     position: absolute;
-    top: 60px;
+    top: 70px;
     right: 0;
-    /* Made mobile menu dark to match navbar */
+    width: 220px;
     background-color: rgba(0, 0, 0, 0.95);
-    width: 200px;
     flex-direction: column;
     align-items: flex-start;
-    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     padding: 1rem;
     display: none;
@@ -122,15 +100,15 @@
     width: 100%;
     display: block;
     padding: 0.5rem 0;
-    color: #ffffff;
-  }
-
-  /* Mobile screen Logo */
-  .logo-image {
-    height: 55px;
-    width: auto;
   }
 }
+
+/* Scroll shadow (optional aesthetic) */
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.85);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Tablet & Small Desktop Tweaks */
 @media screen and (max-width: 1024px) {

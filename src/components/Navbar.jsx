@@ -6,22 +6,21 @@ import { doc, onSnapshot } from "firebase/firestore"
 
 function Navbar() {
   const { tenantId } = useSelector((state) => state.tenant)
-
   const [logo, setLogo] = useState(null)
   const [navbarColors, setNavbarColors] = useState({
     background: "transparent",
     links: "#ffffff",
     logoText: "#ffffff",
   })
+  const [menuOpen, setMenuOpen] = useState(false)
 
+  // Load CMS data
   useEffect(() => {
     if (!tenantId) return
 
     const logoRef = doc(db, "tenants", tenantId, "data", "logo")
     const unsubLogo = onSnapshot(logoRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setLogo(docSnap.data())
-      }
+      if (docSnap.exists()) setLogo(docSnap.data())
     })
 
     const navbarRef = doc(db, "tenants", tenantId, "data", "navbarColors")
@@ -35,12 +34,14 @@ function Navbar() {
     }
   }, [tenantId])
 
-  // Scroll effect
+  // Scroll transparency logic
   useEffect(() => {
     const handleScroll = () => {
       const navbar = document.querySelector(".navbar")
-      if (window.scrollY > 50) {
-        navbar.style.backgroundColor = "rgba(0,0,0,0.85)"
+      if (window.scrollY > 80) {
+        navbar.style.backgroundColor = navbarColors.background !== "transparent"
+          ? navbarColors.background
+          : "rgba(0, 0, 0, 0.85)"
       } else {
         navbar.style.backgroundColor = "transparent"
       }
@@ -48,57 +49,56 @@ function Navbar() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [navbarColors])
 
   return (
-    <nav
-      className="navbar"
-      style={{
-        padding: "15px 30px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <div className="logo">
-        {logo ? (
-          logo.type === "text" ? (
-            <h2 style={{ color: navbarColors.logoText, margin: 0 }}>{logo.text}</h2>
+    <nav className="navbar">
+      <div className="navbar-container">
+        {/* Logo */}
+        <div className="logo-text">
+          {logo ? (
+            logo.type === "text" ? (
+              <Link to="/" style={{ color: navbarColors.logoText }}>
+                {logo.text}
+              </Link>
+            ) : (
+              <Link to="/">
+                <img
+                  src={logo.url || "/placeholder.svg"}
+                  alt="Logo"
+                  className="logo-image"
+                />
+              </Link>
+            )
           ) : (
-            <img src={logo.url || "/placeholder.svg"} alt="Logo" style={{ height: "40px" }} />
-          )
-        ) : (
-          <h2 style={{ color: navbarColors.logoText, margin: 0 }}>Business</h2>
-        )}
-      </div>
+            <Link to="/" style={{ color: navbarColors.logoText }}>
+              Business
+            </Link>
+          )}
+        </div>
 
-      <ul style={{ display: "flex", gap: "20px", listStyle: "none", margin: 0, padding: 0 }}>
-        <li>
-          <Link to="/" style={{ color: navbarColors.links, textDecoration: "none" }}>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link to="/about" style={{ color: navbarColors.links, textDecoration: "none" }}>
-            About
-          </Link>
-        </li>
-        <li>
-          <Link to="/services" style={{ color: navbarColors.links, textDecoration: "none" }}>
-            Services
-          </Link>
-        </li>
-        <li>
-          <Link to="/projects" style={{ color: navbarColors.links, textDecoration: "none" }}>
-            Projects
-          </Link>
-        </li>
-        <li>
-          <Link to="/contact" style={{ color: navbarColors.links, textDecoration: "none" }}>
-            Contact
-          </Link>
-        </li>
-      </ul>
+        {/* Hamburger */}
+        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+        </div>
+
+        {/* Menu Links */}
+        <ul className={`nav-menu ${menuOpen ? "active" : ""}`}>
+          {["Home", "About", "Services", "Projects", "Contact"].map((page) => (
+            <li key={page}>
+              <Link
+                to={`/${page.toLowerCase() === "home" ? "" : page.toLowerCase()}`}
+                onClick={() => setMenuOpen(false)}
+                style={{ color: navbarColors.links }}
+              >
+                {page}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   )
 }
