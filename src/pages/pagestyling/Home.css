@@ -1,283 +1,289 @@
-/* src/pages/pagestyling/Home.css */
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
+/* ==========================
+   GENERAL PAGE STYLES
+========================== */
 .homecontainer {
-  font-family: "Poppins", sans-serif;
-  color: #222;
+  width: 100%;
   overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+  background-color: #ffffff;
+}
+
+/* ==========================
+   NAVBAR STYLES
+========================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 40px;
+  background-color: transparent;
+  transition: background-color 0.4s ease, padding 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 12px 40px;
+}
+
+.navbar .logo h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.navbar img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 25px;
+  list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* ===== Banner Section ===== */
+.navbar ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  color: #ffb703;
+  border-bottom: 2px solid #ffb703;
+}
+
+/* ==========================
+   BANNER SECTION
+========================== */
 .bannerSection {
   position: relative;
   height: 100vh;
-  width: 100vw;
-  margin: 0;
-  padding: 0;
+  width: 100%;
   overflow: hidden;
 }
 
-.bannerSlider,
-.slick-slider,
-.slick-list,
-.slick-track,
-.bannerSlide {
+.bannerSlider {
   height: 100%;
+}
+
+.bannerSlide {
+  position: relative;
+  height: 100vh;
   width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 .bannerImage {
   height: 100vh;
   width: 100%;
   object-fit: cover;
-  display: block;
-  margin: 0;
-  padding: 0;
 }
 
-/* Dots styling */
-.slick-dots {
-  bottom: 20px;
-}
-.slick-dots li button:before {
-  color: #fff;
-  opacity: 0.6;
-}
-.slick-dots li.slick-active button:before {
-  color: #f4b400;
-  opacity: 1;
-}
-
-/* Overlay Content */
+/* Banner Overlay (dark filter) */
 .bannerOverlay {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  z-index: 2;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 5;
+}
+
+/* ==========================
+   BANNER CONTENT
+========================== */
+.bannerContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8% 5% 5% 5%;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.169);
+  padding: 5% 8%;
   box-sizing: border-box;
 }
 
-/* ===== Text Section ===== */
+/* Text Section */
 .textSection {
   max-width: 50%;
-  position: absolute;
-  left: 0; /* anchor to overlay’s left edge */
-  bottom: 25%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  box-sizing: border-box;
-  padding-right: 1rem;
-  margin-left: 2em;
+  z-index: 12;
 }
 
 .textSection h4 {
   font-size: 1.3rem;
-  color: #ffffff;
   margin-bottom: 0.5rem;
-  /* text-shadow:
-    0 0 2px rgba(0, 0, 0, 0.7),
-    0 0 3px rgba(0, 0, 0, 0.4),
-    0 1px 2px rgba(0, 0, 0, 0.7); */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffd166;
 }
 
 .textSection h1 {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
 .textSection p {
-  font-size: 1rem;
-  color: #f0f0f0;
-  line-height: 1.6;
-  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 600px;
+  color: #dddddd;
+  margin-bottom: 1.5rem;
 }
 
-/* ===== Buttons ===== */
-.homeActionButtons {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-  gap: 1rem;
-}
-
-.primaryBtn,
-.secondaryBtn {
-  padding: 0.8rem 1.8rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s ease;
-}
-
-.primaryBtn {
-  background: #f4b400;
-  color: #000;
-}
-
-.primaryBtn:hover {
-  background: #e2a200;
-}
-
-.secondaryBtn {
-  background: transparent;
-  border: 2px solid #fff;
-  color: #fff;
-}
-
-.secondaryBtn:hover {
-  background: #fff;
-  color: #000;
-}
-
-/* ===== Right Image ===== */
+/* Right Image Section */
 .rightImageWrapper {
-  position: absolute;
-  top: 65%;
-  right: 0%;
-  transform: translateY(-50%);
-  width: 500px;
-  height: 550px;
-  text-align: right;
-  z-index: 3;
+  position: relative;
+  z-index: 12;
+  max-width: 500px;
 }
 
 .rightImage {
   width: 100%;
-  height: 100%;
+  max-height: 600px;
+  border-radius: 12px;
   object-fit: cover;
-  border-top-right-radius: 2%;
-  border-top-left-radius: 60%;
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
 }
 
-/* ===== Responsive ===== */
-
-@media screen and (max-width: 1200px) {
-  .rightImageWrapper {
-    width: 450px;
-    height: 500px;
-  }
+.rightImage:hover {
+  transform: scale(1.02);
 }
 
-@media screen and (max-width: 992px) {
-  .bannerOverlay {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 3rem 1rem;
-  }
+/* ==========================
+   BUTTONS
+========================== */
+.homeActionButtons {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+}
 
+.primaryBtn {
+  background-color: #ffb703;
+  border: none;
+  padding: 12px 24px;
+  color: #000000;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primaryBtn:hover {
+  background-color: #ffffff;
+  color: #000000;
+  transform: translateY(-3px);
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondaryBtn:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* ==========================
+   RESPONSIVE DESIGN
+========================== */
+@media screen and (max-width: 1024px) {
   .textSection {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    max-width: 95%;
-    margin: 0 auto;
-    padding: 0 1rem;
+    max-width: 60%;
   }
 
   .textSection h1 {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
+  }
+
+  .textSection p {
+    font-size: 1rem;
   }
 
   .rightImageWrapper {
-    margin-top: 2rem;
-    position: relative;
-    right: auto;
-    transform: none;
-  }
-
-  .homeActionButtons {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .primaryBtn,
-  .secondaryBtn {
-    width: 100%;
-    max-width: 420px;
-    box-sizing: border-box;
+    max-width: 400px;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .navbar {
+    padding: 15px 25px;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+
+  .bannerContent {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 15% 5%;
+  }
+
+  .textSection {
+    max-width: 100%;
+  }
+
   .rightImageWrapper {
     display: none;
   }
 
-  .bannerOverlay {
-    width: 100%;
-    margin: 0;
-  }
-
-  .textSection {
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .homeActionButtons {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-  }
-
-  .primaryBtn,
-  .secondaryBtn {
-    width: 35%;
-    max-width: 100%;
-    
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .textSection {
-    width: 100%;
-
-  }
-
   .textSection h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
-  .textSection h4 {
+  .textSection p {
     font-size: 1rem;
   }
 
   .homeActionButtons {
-  display: flex;
-  justify-content: center; /* pushes buttons to each end */
-  align-items: center;
-  width: 100vw; /* full screen width */
-  margin-left: calc(-50vw + 50%); /* ensures it breaks out of container padding */
-   /* optional: add breathing room on edges */
-  box-sizing: border-box;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 
+@media screen and (max-width: 480px) {
+  .textSection h1 {
+    font-size: 1.6rem;
+  }
 
   .primaryBtn,
   .secondaryBtn {
-    width: 40%;
-    max-width: 100%;
-    padding: 4%;
+    padding: 10px 18px;
+    font-size: 0.9rem;
   }
 }
+
+/* ==========================
+   SCROLL ANIMATION (optional)
+========================== */
+html {
+  scroll-behavior: smooth;
+}
+

@@ -5,7 +5,7 @@ import { db } from "../firebase/config"
  * Detects tenant ID from the current domain or subdomain
  * Priority:
  * 1. Custom domain mapping (e.g., clientbusiness.com -> tenantId)
- * 2. Subdomain extraction (e.g., client1.myapp.com -> client1)
+ * 2. Subdomain mapping (e.g., handybusiness.vercel.app -> tenantId via subdomains collection)
  * 3. Localhost fallback for development
  */
 export async function detectTenantId() {
@@ -42,19 +42,23 @@ export async function detectTenantId() {
     console.error("[v0] Error checking custom domain mapping:", error)
   }
 
-  // Extract from subdomain (e.g., client1.myapp.com -> client1)
   const parts = hostname.split(".")
-  if (parts.length >= 3) {
+  if (parts.length >= 2) {
     const subdomain = parts[0]
-    // Verify this tenant exists
+    console.log("[v0] Extracted subdomain:", subdomain)
+
+    // Check subdomain mapping in Firestore
     try {
-      const tenantDoc = await getDoc(doc(db, "tenants", subdomain))
-      if (tenantDoc.exists()) {
-        console.log("[v0] Found tenant ID from subdomain:", subdomain)
-        return subdomain
+      const subdomainDoc = await getDoc(doc(db, "subdomains", subdomain))
+      if (subdomainDoc.exists()) {
+        const tenantId = subdomainDoc.data().tenantId
+        console.log("[v0] Found tenant ID from subdomain mapping:", tenantId)
+        return tenantId
+      } else {
+        console.log("[v0] No subdomain mapping found for:", subdomain)
       }
     } catch (error) {
-      console.error("[v0] Error verifying subdomain tenant:", error)
+      console.error("[v0] Error checking subdomain mapping:", error)
     }
   }
 
@@ -72,7 +76,7 @@ export async function validateTenant(tenantId) {
     }
 
     const tenantData = tenantDoc.data()
-    if (tenantData.status === "inactive") {
+    if (tenantData.isActive === false) {
       throw new Error(`Tenant ${tenantId} is inactive`)
     }
 

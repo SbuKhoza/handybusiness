@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -28,9 +26,7 @@ function Navbar() {
 
     const navbarRef = doc(db, "tenants", tenantId, "data", "navbarColors")
     const unsubNav = onSnapshot(navbarRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setNavbarColors(docSnap.data())
-      }
+      if (docSnap.exists()) setNavbarColors(docSnap.data())
     })
 
     return () => {
@@ -39,10 +35,25 @@ function Navbar() {
     }
   }, [tenantId])
 
+  // Scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const navbar = document.querySelector(".navbar")
+      if (window.scrollY > 50) {
+        navbar.style.backgroundColor = "rgba(0,0,0,0.85)"
+      } else {
+        navbar.style.backgroundColor = "transparent"
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
     <nav
+      className="navbar"
       style={{
-        backgroundColor: navbarColors.background,
         padding: "15px 30px",
         display: "flex",
         justifyContent: "space-between",
