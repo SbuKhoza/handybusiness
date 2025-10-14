@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { db } from "../../firebase/config"
+import { useSelector } from "react-redux"
 import {
   collection,
   addDoc,
@@ -10,9 +10,12 @@ import {
   getDocs,
   serverTimestamp,
 } from "firebase/firestore"
+import { db } from "../../firebase/config"
 import "./Testimonials.css"
 
 function Testimonials() {
+  const { tenantId } = useSelector((state) => state.tenant)
+
   const [reviews, setReviews] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [showRateModal, setShowRateModal] = useState(false)
@@ -23,59 +26,53 @@ function Testimonials() {
   const [isAllowed, setIsAllowed] = useState(false)
   const [averageRating, setAverageRating] = useState(0)
 
-  // ✅ Utility: Mask email
+  // ✅ Mask email for display
   const maskEmail = (email) => {
     if (!email || !email.includes("@")) return ""
     const [name, domain] = email.split("@")
-    if (name.length <= 2) return email // short names unchanged
     const first = name.charAt(0)
     const last = name.charAt(name.length - 1)
     return `${first}...${last}@${domain}`
   }
 
-  // 🔹 Fetch reviews + live average
+  // 🔹 Fetch reviews per tenant (FIXED: Changed from top-level to subcollection)
   useEffect(() => {
-    const reviewsRef = collection(db, "reviews")
+    if (!tenantId) return
+    const reviewsRef = collection(db, "tenants", tenantId, "reviews")
     const q = query(reviewsRef, orderBy("timestamp", "desc"))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const fetched = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))
       setReviews(fetched)
-
-      if (fetched.length > 0) {
-        const avg =
-          fetched.reduce((sum, r) => sum + (r.rating || 0), 0) / fetched.length
-        setAverageRating(avg.toFixed(1))
-      } else {
-        setAverageRating(0)
-      }
+      const avg =
+        fetched.length > 0
+          ? fetched.reduce((sum, r) => sum + (r.rating || 0), 0) / fetched.length
+          : 0
+      setAverageRating(avg.toFixed(1))
     })
     return unsubscribe
-  }, [])
+  }, [tenantId])
 
-  // 🔹 Verify email and check if already reviewed
+  // 🔹 Check if user is allowed and hasn't reviewed yet
   const handleEmailCheck = async () => {
-    if (!email.trim()) {
-      alert("Please enter your email.")
-      return
-    }
+    if (!tenantId) return alert("Invalid tenant.")
+    if (!email.trim()) return alert("Please enter your email.")
 
     try {
-      // Check if email exists in users-rating collection
-      const usersRef = collection(db, "users-rating")
+      // Check if email is in allowed list
+      const usersRef = collection(db, "tenants", tenantId, "users-rating")
       const q = query(usersRef, where("email", "==", email.trim()))
       const querySnapshot = await getDocs(q)
 
       if (querySnapshot.empty) {
-        alert("Email not found in our system. You are not allowed to review.")
+        alert("You are not allowed to submit a review.")
         setIsAllowed(false)
         return
       }
 
-      // Check if the same email already reviewed
-      const reviewsRef = collection(db, "reviews")
+      // Check if they already reviewed
+      const reviewsRef = collection(db, "tenants", tenantId, "reviews")
       const q2 = query(reviewsRef, where("email", "==", email.trim()))
       const existing = await getDocs(q2)
-
       if (!existing.empty) {
         alert("You have already submitted a review.")
         setIsAllowed(false)
@@ -83,40 +80,36 @@ function Testimonials() {
       }
 
       setIsAllowed(true)
-      alert("✅ Email verified! You can now leave your review.")
-    } catch (error) {
-      console.error("Error checking email:", error)
-      alert("An error occurred while checking your email. Please try again.")
+      alert("✅ Verified! You can now leave a review.")
+    } catch (err) {
+      console.error(err)
+      alert("Error verifying email.")
     }
   }
 
   // 🔹 Submit review
   const handleSubmitReview = async () => {
-    if (!isAllowed) {
-      alert("Please verify your email before submitting.")
-      return
-    }
-
-    if (rating === 0 || reviewText.trim() === "") {
-      alert("Please select a rating and write a review.")
-      return
-    }
+    if (!tenantId) return
+    if (!isAllowed) return alert("Please verify your email first.")
+    if (rating === 0 || reviewText.trim() === "") return alert("Please select a rating and enter a review.")
 
     try {
-      await addDoc(collection(db, "reviews"), {
+      const reviewsRef = collection(db, "tenants", tenantId, "reviews")
+      await addDoc(reviewsRef, {
         email,
         rating,
         reviewText,
         timestamp: serverTimestamp(),
       })
-      alert("Thank you for your review!")
+      alert("✅ Thank you for your feedback!")
       setShowRateModal(false)
+      setEmail("")
       setRating(0)
       setReviewText("")
-      setEmail("")
       setIsAllowed(false)
-    } catch (error) {
-      console.error("Error adding review:", error)
+    } catch (err) {
+      console.error(err)
+      alert("Error submitting review.")
     }
   }
 
@@ -129,12 +122,7 @@ function Testimonials() {
         <div className="averageRatingDisplay">
           <div className="starDisplay">
             {[1, 2, 3, 4, 5].map((num) => (
-              <span
-                key={num}
-                className={`star ${
-                  num <= Math.round(averageRating) ? "filled" : ""
-                }`}
-              >
+              <span key={num} className={`star ${num <= Math.round(averageRating) ? "filled" : ""}`}>
                 ★
               </span>
             ))}
@@ -146,7 +134,7 @@ function Testimonials() {
         </button>
       </div>
 
-      {/* 🔹 Reviews Grid */}
+      {/* Reviews Grid */}
       <div className="testimonialGrid">
         {visibleReviews.length > 0 ? (
           visibleReviews.map((r) => (
@@ -170,7 +158,7 @@ function Testimonials() {
         </button>
       )}
 
-      {/* 🔹 View All Modal */}
+      {/* All Reviews Modal */}
       {showModal && (
         <div className="modalOverlay" onClick={() => setShowModal(false)}>
           <div className="modalContent" onClick={(e) => e.stopPropagation()}>
@@ -192,13 +180,12 @@ function Testimonials() {
         </div>
       )}
 
-      {/* 🔹 Rate Modal */}
+      {/* Rate Modal */}
       {showRateModal && (
         <div className="modalOverlay" onClick={() => setShowRateModal(false)}>
           <div className="modalContent" onClick={(e) => e.stopPropagation()}>
             <h3>Leave a Review</h3>
 
-            {/* Email Field */}
             <input
               type="email"
               placeholder="Enter your email"
@@ -209,13 +196,9 @@ function Testimonials() {
               Verify Email
             </button>
 
-            {/* Stars - Disabled until verified */}
             <div
               className={`starsInput ${!isAllowed ? "disabled" : ""}`}
-              style={{
-                pointerEvents: isAllowed ? "auto" : "none",
-                opacity: isAllowed ? 1 : 0.4,
-              }}
+              style={{ pointerEvents: isAllowed ? "auto" : "none", opacity: isAllowed ? 1 : 0.4 }}
             >
               {[1, 2, 3, 4, 5].map((num) => (
                 <span
@@ -230,15 +213,10 @@ function Testimonials() {
               ))}
             </div>
 
-            {/* Review textarea - Disabled until verified */}
             <textarea
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
-              placeholder={
-                isAllowed
-                  ? "Write your review..."
-                  : "Please verify your email first..."
-              }
+              placeholder={isAllowed ? "Write your review..." : "Please verify your email first..."}
               disabled={!isAllowed}
               style={{ opacity: isAllowed ? 1 : 0.5 }}
             />
@@ -247,10 +225,7 @@ function Testimonials() {
               <button className="submitButton" onClick={handleSubmitReview}>
                 Submit
               </button>
-              <button
-                className="closeModal"
-                onClick={() => setShowRateModal(false)}
-              >
+              <button className="closeModal" onClick={() => setShowRateModal(false)}>
                 Cancel
               </button>
             </div>

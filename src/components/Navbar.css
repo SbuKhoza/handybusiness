@@ -13,9 +13,9 @@
 
 /* Navbar when scrolled */
 .navbar.scrolled {
-  background-color: rgba(0, 0, 0, 0.674);
+  background-color: rgb(0, 0, 0);
   border-bottom-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(1px);
 }
 
 /* Navbar Container */
