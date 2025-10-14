@@ -110,12 +110,12 @@ function Home() {
           </div>
 
           <div className="rightImageWrapper">
-            <img
+            {/* <img
               src={homeData.rightImage || "https://via.placeholder.com/500x600?text=Right+Image"}
               alt="Right"
               className="rightImage"
               style={{ objectFit: homeData.rightImageFit || "cover" }}
-            />
+            /> */}
           </div>
         </div>
       </div>
