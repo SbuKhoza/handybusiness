@@ -3,18 +3,18 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { db } from "../firebase/config"
 import { doc, onSnapshot } from "firebase/firestore"
+import "./Navbar.css"
 
 function Navbar() {
   const { tenantId } = useSelector((state) => state.tenant)
+
   const [logo, setLogo] = useState(null)
   const [navbarColors, setNavbarColors] = useState({
-    background: "transparent",
+    background: "rgba(0, 0, 0, 0.15)",
     links: "#ffffff",
     logoText: "#ffffff",
   })
-  const [menuOpen, setMenuOpen] = useState(false)
 
-  // Load CMS data
   useEffect(() => {
     if (!tenantId) return
 
@@ -34,69 +34,73 @@ function Navbar() {
     }
   }, [tenantId])
 
-  // Scroll transparency logic
+  // Scroll effect (darken navbar when scrolling)
   useEffect(() => {
-    const handleScroll = () => {
-      const navbar = document.querySelector(".navbar")
-      if (window.scrollY > 80) {
-        navbar.style.backgroundColor = navbarColors.background !== "transparent"
-          ? navbarColors.background
-          : "rgba(0, 0, 0, 0.85)"
-      } else {
-        navbar.style.backgroundColor = "transparent"
-      }
-    }
+  const navbar = document.querySelector(".navbar")
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [navbarColors])
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add("scrolled")
+    } else {
+      navbar.classList.remove("scrolled")
+    }
+  }
+
+  window.addEventListener("scroll", handleScroll)
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [])
+
 
   return (
-    <nav className="navbar">
+    <nav
+      className="navbar"
+      style={{
+        backgroundColor: navbarColors.background || "transparent",
+      }}
+    >
       <div className="navbar-container">
-        {/* Logo */}
-        <div className="logo-text">
+        <div className="logo">
           {logo ? (
             logo.type === "text" ? (
-              <Link to="/" style={{ color: navbarColors.logoText }}>
-                {logo.text}
-              </Link>
+              <h2 style={{ color: navbarColors.logoText, margin: 0 }}>{logo.text}</h2>
             ) : (
-              <Link to="/">
-                <img
-                  src={logo.url || "/placeholder.svg"}
-                  alt="Logo"
-                  className="logo-image"
-                />
-              </Link>
+              <img
+                src={logo.url || "/placeholder.svg"}
+                alt="Logo"
+                className="logo-image"
+              />
             )
           ) : (
-            <Link to="/" style={{ color: navbarColors.logoText }}>
-              Business
-            </Link>
+            <h2 style={{ color: navbarColors.logoText, margin: 0 }}>Business</h2>
           )}
         </div>
 
-        {/* Hamburger */}
-        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
-          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
-          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
-          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
-        </div>
-
-        {/* Menu Links */}
-        <ul className={`nav-menu ${menuOpen ? "active" : ""}`}>
-          {["Home", "About", "Services", "Projects", "Contact"].map((page) => (
-            <li key={page}>
-              <Link
-                to={`/${page.toLowerCase() === "home" ? "" : page.toLowerCase()}`}
-                onClick={() => setMenuOpen(false)}
-                style={{ color: navbarColors.links }}
-              >
-                {page}
-              </Link>
-            </li>
-          ))}
+        <ul className="nav-menu">
+          <li>
+            <Link to="/" style={{ color: navbarColors.links }}>
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/about" style={{ color: navbarColors.links }}>
+              About
+            </Link>
+          </li>
+          <li>
+            <Link to="/services" style={{ color: navbarColors.links }}>
+              Services
+            </Link>
+          </li>
+          <li>
+            <Link to="/projects" style={{ color: navbarColors.links }}>
+              Projects
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact" style={{ color: navbarColors.links }}>
+              Contact
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { db } from "../firebase/config"
@@ -8,13 +6,13 @@ import Slider from "react-slick"
 import Services from "../components/pagescomponents/Services"
 import Testimonials from "../components/pagescomponents/Testimonials"
 import Footer from "../components/pagescomponents/Footer"
+import Navbar from "../components/Navbar"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import "./pagestyling/Home.css"
 
 function Home() {
   const { tenantId } = useSelector((state) => state.tenant)
-
   const [homeData, setHomeData] = useState({
     bannerImages: [],
     rightImage: "",
@@ -70,7 +68,7 @@ function Home() {
   const bannerImages =
     homeData.bannerImages && homeData.bannerImages.length > 0
       ? homeData.bannerImages
-      : ["https://via.placeholder.com/1600x900?text=Banner+1", "https://via.placeholder.com/1600x900?text=Banner+2"]
+      : ["https://via.placeholder.com/1600x900?text=Banner+1"]
 
   const sliderSettings = {
     dots: true,
@@ -86,6 +84,9 @@ function Home() {
 
   return (
     <div className="homecontainer">
+      {/* Navbar over banner */}
+      
+
       {/* Banner */}
       <div className="bannerSection">
         <Slider {...sliderSettings} className="bannerSlider">
@@ -119,17 +120,14 @@ function Home() {
         </div>
       </div>
 
-      {/* Services */}
       <div className="homeServices">
         <Services />
       </div>
 
-      {/* Testimonials */}
       <div className="homeTestimonials">
         <Testimonials />
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   )
