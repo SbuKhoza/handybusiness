@@ -1,28 +1,24 @@
+"use client"
+
 import { useEffect, useState } from "react"
-import { db, auth } from "../../firebase/config"
+import { useSelector } from "react-redux"
+import { db } from "../../firebase/config"
 import { collection, doc, onSnapshot, query, orderBy } from "firebase/firestore"
-import './ServicesComponent.css'
+import "./ServicesComponent.css"
 
 function Services() {
-  const [user, setUser] = useState(null)
+  const { tenantId } = useSelector((state) => state.tenant)
+
   const [servicesData, setServicesData] = useState([])
   const [servicesHeader, setServicesHeader] = useState({
     slogan: "",
     shortDescription: "",
   })
 
-  // ✅ Watch auth state
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(setUser)
-    return unsubscribe
-  }, [])
+    if (!tenantId) return
 
-  // ✅ Fetch services header + list
-  useEffect(() => {
-    if (!user) return
-
-    // --- Header info ---
-    const headerRef = doc(db, "users", user.uid, "servicesData", "header")
+    const headerRef = doc(db, "tenants", tenantId, "data", "servicesHeader")
     const unsubHeader = onSnapshot(headerRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data()
@@ -33,9 +29,8 @@ function Services() {
       }
     })
 
-    // --- Services list (ordered) ---
-    const servicesRef = collection(db, "users", user.uid, "services")
-    const servicesQuery = query(servicesRef, orderBy("order", "asc")) // 👈 sort by 'order'
+    const servicesRef = collection(db, "tenants", tenantId, "services")
+    const servicesQuery = query(servicesRef, orderBy("order", "asc"))
     const unsubServices = onSnapshot(servicesQuery, (snapshot) => {
       const fetched = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -48,7 +43,7 @@ function Services() {
       unsubHeader()
       unsubServices()
     }
-  }, [user])
+  }, [tenantId])
 
   return (
     <div className="servicescontainer">
@@ -65,12 +60,7 @@ function Services() {
           servicesData.map((service) => (
             <div className="servdescript" key={service.id}>
               <img
-                src={
-                  service.image ||
-                  "https://via.placeholder.com/400x300?text=Service+Image" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg"
-                }
+                src={service.image || "https://via.placeholder.com/400x300?text=Service+Image"}
                 alt={service.title || "Service image"}
               />
               <div className="service-content">

@@ -1,88 +1,95 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { db, auth } from "../firebase/config";
-import { doc, onSnapshot } from "firebase/firestore";
-import "./Navbar.css";
+"use client"
+
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { db } from "../firebase/config"
+import { doc, onSnapshot } from "firebase/firestore"
 
 function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [logoData, setLogoData] = useState(null);
+  const { tenantId } = useSelector((state) => state.tenant)
+
+  const [logo, setLogo] = useState(null)
   const [navbarColors, setNavbarColors] = useState({
     background: "transparent",
     links: "#ffffff",
     logoText: "#ffffff",
-  });
+  })
 
   useEffect(() => {
-    const unsubscribeAuth = auth.onAuthStateChanged((user) => {
-      if (user) {
-        // Logo
-        const logoRef = doc(db, "logos", user.uid);
-        onSnapshot(logoRef, (docSnap) => {
-          if (docSnap.exists()) setLogoData(docSnap.data());
-          else setLogoData(null);
-        });
+    if (!tenantId) return
 
-        // Navbar colors
-        const navbarRef = doc(db, "navbarColors", user.uid);
-        onSnapshot(navbarRef, (docSnap) => {
-          if (docSnap.exists()) setNavbarColors(docSnap.data());
-        });
-      } else {
-        setLogoData(null);
-        setNavbarColors({
-          background: "transparent",
-          links: "#ffffff",
-          logoText: "#ffffff",
-        });
+    const logoRef = doc(db, "tenants", tenantId, "data", "logo")
+    const unsubLogo = onSnapshot(logoRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setLogo(docSnap.data())
       }
-    });
+    })
 
-    return () => unsubscribeAuth();
-  }, []);
+    const navbarRef = doc(db, "tenants", tenantId, "data", "navbarColors")
+    const unsubNav = onSnapshot(navbarRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setNavbarColors(docSnap.data())
+      }
+    })
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const closeMenu = () => setMenuOpen(false);
+    return () => {
+      unsubLogo()
+      unsubNav()
+    }
+  }, [tenantId])
 
   return (
-    <nav style={{ backgroundColor: navbarColors.background || "transparent" }} className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-logo">
-          <Link
-            to="/"
-            onClick={closeMenu}
-            style={{ color: navbarColors.logoText || "#ffffff" }}
-          >
-            {logoData?.type === "image" && logoData.url ? (
-              <img src={logoData.url} alt="Logo" className="logo-image" />
-            ) : (
-              <span className="logo-text">{logoData?.text || "MY LOGO"}</span>
-            )}
-          </Link>
-        </div>
-
-        <div className="menu-icon" onClick={toggleMenu}>
-          <div className={menuOpen ? "bar open" : "bar"}></div>
-          <div className={menuOpen ? "bar open" : "bar"}></div>
-          <div className={menuOpen ? "bar open" : "bar"}></div>
-        </div>
-
-        <ul className={menuOpen ? "nav-menu active" : "nav-menu"}>
-          {["Home", "About", "Services", "Projects", "Contact"].map((link) => (
-            <li key={link}>
-              <Link
-                to={`/${link.toLowerCase()}`}
-                onClick={closeMenu}
-                style={{ color: navbarColors.links || "#ffffff" }}
-              >
-                {link}
-              </Link>
-            </li>
-          ))}
-        </ul>
+    <nav
+      style={{
+        backgroundColor: navbarColors.background,
+        padding: "15px 30px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <div className="logo">
+        {logo ? (
+          logo.type === "text" ? (
+            <h2 style={{ color: navbarColors.logoText, margin: 0 }}>{logo.text}</h2>
+          ) : (
+            <img src={logo.url || "/placeholder.svg"} alt="Logo" style={{ height: "40px" }} />
+          )
+        ) : (
+          <h2 style={{ color: navbarColors.logoText, margin: 0 }}>Business</h2>
+        )}
       </div>
+
+      <ul style={{ display: "flex", gap: "20px", listStyle: "none", margin: 0, padding: 0 }}>
+        <li>
+          <Link to="/" style={{ color: navbarColors.links, textDecoration: "none" }}>
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link to="/about" style={{ color: navbarColors.links, textDecoration: "none" }}>
+            About
+          </Link>
+        </li>
+        <li>
+          <Link to="/services" style={{ color: navbarColors.links, textDecoration: "none" }}>
+            Services
+          </Link>
+        </li>
+        <li>
+          <Link to="/projects" style={{ color: navbarColors.links, textDecoration: "none" }}>
+            Projects
+          </Link>
+        </li>
+        <li>
+          <Link to="/contact" style={{ color: navbarColors.links, textDecoration: "none" }}>
+            Contact
+          </Link>
+        </li>
+      </ul>
     </nav>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

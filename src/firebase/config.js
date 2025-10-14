@@ -1,22 +1,21 @@
-// src/config.js
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from "firebase/app"
+import { getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
+import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAvrTy7m6OYqTkFD2ezu-gHXSCmrRNWqoI",
-  authDomain: "business001-d42d8.firebaseapp.com",
-  projectId: "business001-d42d8",
-  storageBucket: "business001-d42d8.firebasestorage.app",
-  messagingSenderId: "801149423209",
-  appId: "1:801149423209:web:332a93c004c1585be55cf8",
-  measurementId: "G-DP5N7TBDPF",
-};
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAvrTy7m6OYqTkFD2ezu-gHXSCmrRNWqoI",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "business001-d42d8.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "business001-d42d8",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "business001-d42d8.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "801149423209",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:801149423209:web:332a93c004c1585be55cf8",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-DP5N7TBDPF",
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const storage = getStorage(app)
 
-export { app, auth, db, storage };
+export { app, auth, db, storage }
