@@ -66,6 +66,18 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [menuOpen])
+
   // Determine which colors to use
   const getCurrentColors = () => {
     if (!isHomePage) {
@@ -95,67 +107,136 @@ function Navbar() {
 
   const currentColors = getCurrentColors()
 
+  // Get hamburger bar color (should contrast with navbar background)
+  const getHamburgerColor = () => {
+    // Use the link color for hamburger bars
+    return currentColors.links
+  }
+
+  const handleLinkClick = () => {
+    setMenuOpen(false)
+  }
+
   return (
-    <nav
-      className={`navbar ${isScrolled ? 'scrolled' : ''}`}
-      style={{
-        backgroundColor: currentColors.background,
-      }}
-    >
-      <div className="navbar-container">
-        <div className="logo">
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            {logo ? (
-              logo.type === "text" ? (
-                <h2 style={{ color: currentColors.logoText, margin: 0 }}>{logo.text}</h2>
+    <>
+      <nav
+        className={`navbar ${isScrolled ? 'scrolled' : ''}`}
+        style={{
+          backgroundColor: currentColors.background,
+        }}
+      >
+        <div className="navbar-container">
+          <div className="logo">
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              {logo ? (
+                logo.type === "text" ? (
+                  <h2 style={{ color: currentColors.logoText, margin: 0 }}>{logo.text}</h2>
+                ) : (
+                  <img
+                    src={logo.url || "/placeholder.svg"}
+                    alt="Logo"
+                    className="logo-image"
+                  />
+                )
               ) : (
-                <img
-                  src={logo.url || "/placeholder.svg"}
-                  alt="Logo"
-                  className="logo-image"
-                />
-              )
-            ) : (
-              <h2 style={{ color: currentColors.logoText, margin: 0 }}>Business</h2>
-            )}
-          </Link>
-        </div>
+                <h2 style={{ color: currentColors.logoText, margin: 0 }}>Business</h2>
+              )}
+            </Link>
+          </div>
 
-        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
-          <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
-          <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
-          <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
-        </div>
+          {/* Desktop Menu */}
+          <ul className="nav-menu desktop-menu">
+            <li>
+              <Link to="/" style={{ color: currentColors.links }}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" style={{ color: currentColors.links }}>
+                About
+              </Link>
+            </li>
+            <li>
+              <Link to="/services" style={{ color: currentColors.links }}>
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link to="/projects" style={{ color: currentColors.links }}>
+                Projects
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" style={{ color: currentColors.links }}>
+                Contact
+              </Link>
+            </li>
+          </ul>
 
-        <ul className={`nav-menu ${menuOpen ? 'active' : ''}`}>
-          <li>
-            <Link to="/" style={{ color: currentColors.links }} onClick={() => setMenuOpen(false)}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" style={{ color: currentColors.links }} onClick={() => setMenuOpen(false)}>
-              About
-            </Link>
-          </li>
-          <li>
-            <Link to="/services" style={{ color: currentColors.links }} onClick={() => setMenuOpen(false)}>
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link to="/projects" style={{ color: currentColors.links }} onClick={() => setMenuOpen(false)}>
-              Projects
-            </Link>
-          </li>
-          <li>
-            <Link to="/contact" style={{ color: currentColors.links }} onClick={() => setMenuOpen(false)}>
-              Contact
-            </Link>
-          </li>
-        </ul>
+          {/* Hamburger Icon */}
+          <div 
+            className={`menu-icon ${menuOpen ? 'open' : ''}`} 
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <div 
+              className="bar" 
+              style={{ backgroundColor: getHamburgerColor() }}
+            ></div>
+            <div 
+              className="bar" 
+              style={{ backgroundColor: getHamburgerColor() }}
+            ></div>
+            <div 
+              className="bar" 
+              style={{ backgroundColor: getHamburgerColor() }}
+            ></div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Fullscreen Mobile Menu */}
+      <div className={`mobile-menu-overlay ${menuOpen ? 'active' : ''}`}>
+        {/* Close Button */}
+        <button 
+          className="mobile-menu-close"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          <span className="close-icon"></span>
+          <span className="close-icon"></span>
+        </button>
+
+        <div className="mobile-menu-content">
+          <ul className="mobile-nav-menu">
+            <li>
+              <Link to="/" onClick={handleLinkClick}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" onClick={handleLinkClick}>
+                About
+              </Link>
+            </li>
+            <li>
+              <Link to="/services" onClick={handleLinkClick}>
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link to="/projects" onClick={handleLinkClick}>
+                Projects
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" onClick={handleLinkClick}>
+                Contact
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </nav>
+    </>
   )
 }
 
