@@ -1,3 +1,4 @@
+//user facing app
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { db } from "../firebase/config"
@@ -23,6 +24,13 @@ function Home() {
     taglineColor: "#222222",
     sloganColor: "#222222",
     shortDescriptionColor: "#444444",
+    primaryButtonText: "Book for a service",
+    primaryButtonBgColor: "#f4b400",
+    primaryButtonTextColor: "#000000",
+    secondaryButtonText: "Call: 0123456789",
+    secondaryButtonBgColor: "transparent",
+    secondaryButtonTextColor: "#ffffff",
+    secondaryButtonBorderColor: "#ffffff",
   })
 
   const [navbarColors, setNavbarColors] = useState({
@@ -50,6 +58,13 @@ function Home() {
           taglineColor: data.taglineColor || "#222222",
           sloganColor: data.sloganColor || "#222222",
           shortDescriptionColor: data.shortDescriptionColor || "#444444",
+          primaryButtonText: data.primaryButtonText || "Book for a service",
+          primaryButtonBgColor: data.primaryButtonBgColor || "#f4b400",
+          primaryButtonTextColor: data.primaryButtonTextColor || "#000000",
+          secondaryButtonText: data.secondaryButtonText || "Call: 0123456789",
+          secondaryButtonBgColor: data.secondaryButtonBgColor || "transparent",
+          secondaryButtonTextColor: data.secondaryButtonTextColor || "#ffffff",
+          secondaryButtonBorderColor: data.secondaryButtonBorderColor || "#ffffff",
         }))
       }
     })
@@ -104,8 +119,25 @@ function Home() {
             <p style={{ color: homeData.shortDescriptionColor }}>{homeData.shortDescription}</p>
 
             <div className="homeActionButtons">
-              <button className="primaryBtn">Book for a service</button>
-              <button className="secondaryBtn">Call: 0123456789</button>
+              <button 
+                className="primaryBtn"
+                style={{
+                  backgroundColor: homeData.primaryButtonBgColor,
+                  color: homeData.primaryButtonTextColor,
+                }}
+              >
+                {homeData.primaryButtonText}
+              </button>
+              <button 
+                className="secondaryBtn"
+                style={{
+                  backgroundColor: homeData.secondaryButtonBgColor,
+                  color: homeData.secondaryButtonTextColor,
+                  borderColor: homeData.secondaryButtonBorderColor,
+                }}
+              >
+                {homeData.secondaryButtonText}
+              </button>
             </div>
           </div>
 
