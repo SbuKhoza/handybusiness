@@ -7,15 +7,14 @@
   z-index: 100;
   background-color: rgba(0, 0, 0, 0.15);
   border-bottom: 0.3px solid rgba(255, 255, 255, 0.105);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.5px);
   transition: background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
 }
 
 /* Navbar when scrolled */
 .navbar.scrolled {
-  background-color: rgb(0, 0, 0);
-  border-bottom-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(1px);
+  background-color: rgb(5, 4, 4);
+  
 }
 
 /* Navbar Container */
