@@ -5,16 +5,7 @@
   top: 0;
   left: 0;
   z-index: 100;
-  background-color: rgba(0, 0, 0, 0.15);
-  border-bottom: 0.3px solid rgba(255, 255, 255, 0.105);
-  backdrop-filter: blur(0.5px);
-  transition: background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
-}
-
-/* Navbar when scrolled */
-.navbar.scrolled {
-  background-color: rgb(5, 4, 4);
-  
+  transition: background-color 0.4s ease;
 }
 
 /* Navbar Container */
@@ -54,6 +45,8 @@
   display: flex;
   list-style: none;
   gap: 2rem;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-menu li a {
@@ -91,7 +84,7 @@
   .menu-icon {
     display: flex;
   }
-
+  
   .nav-menu {
     position: absolute;
     top: 60px;
@@ -105,23 +98,23 @@
     padding: 1rem;
     display: none;
   }
-
+  
   .nav-menu.active {
     display: flex;
   }
-
+  
   .nav-menu li {
     width: 100%;
     margin: 0.5rem 0;
   }
-
+  
   .nav-menu li a {
     width: 100%;
     display: block;
     padding: 0.5rem 0;
     color: #ffffff;
   }
-
+  
   .logo-image {
     height: 55px;
     width: auto;
