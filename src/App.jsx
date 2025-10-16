@@ -2,20 +2,55 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Provider } from "react-redux"
-import { useEffect } from "react"
+import { lazy, Suspense, useEffect, memo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { store } from "./redux/store/store"
 import { detectTenantId, validateTenant } from "./utils/tenantDetection"
 import { setTenantId, setTenantData, setLoading, setError } from "./redux/slices/tenantSlice"
-import Navbar from "./components/Navbar"
-import Home from "./pages/Home"
-import About from "./pages/About"
-import Service from "./pages/Service"
-import Projects from "./pages/Projects"
-import Contact from "./pages/Contact"
-import PageNotFound from "./pages/Pagenotfound"
 
-function TenantInitializer({ children }) {
+const Navbar = lazy(() => import("./components/Navbar"))
+const Home = lazy(() => import("./pages/Home"))
+const About = lazy(() => import("./pages/About"))
+const Service = lazy(() => import("./pages/Service"))
+const Projects = lazy(() => import("./pages/Projects"))
+const Contact = lazy(() => import("./pages/Contact"))
+const PageNotFound = lazy(() => import("./pages/Pagenotfound"))
+
+const LoadingFallback = memo(() => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      fontSize: "18px",
+    }}
+  >
+    Loading...
+  </div>
+))
+LoadingFallback.displayName = "LoadingFallback"
+
+const ErrorDisplay = memo(({ error }) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      padding: "20px",
+      textAlign: "center",
+    }}
+  >
+    <h2>Unable to Load Site</h2>
+    <p style={{ color: "#dc3545", marginTop: "10px" }}>{error}</p>
+    <p style={{ marginTop: "20px", color: "#666" }}>Please check your domain configuration or contact support.</p>
+  </div>
+))
+ErrorDisplay.displayName = "ErrorDisplay"
+
+const TenantInitializer = memo(({ children }) => {
   const dispatch = useDispatch()
   const { tenantId, loading, error } = useSelector((state) => state.tenant)
 
@@ -41,58 +76,35 @@ function TenantInitializer({ children }) {
   }, [dispatch, tenantId])
 
   if (loading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          fontSize: "18px",
-        }}
-      >
-        Loading...
-      </div>
-    )
+    return <LoadingFallback />
   }
 
   if (error) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          padding: "20px",
-          textAlign: "center",
-        }}
-      >
-        <h2>Unable to Load Site</h2>
-        <p style={{ color: "#dc3545", marginTop: "10px" }}>{error}</p>
-        <p style={{ marginTop: "20px", color: "#666" }}>Please check your domain configuration or contact support.</p>
-      </div>
-    )
+    return <ErrorDisplay error={error} />
   }
 
   return children
-}
+})
+TenantInitializer.displayName = "TenantInitializer"
 
 function App() {
   return (
     <Provider store={store}>
       <TenantInitializer>
         <Router>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/service" element={<Service />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+          <Suspense fallback={<div style={{ height: "64px" }} />}>
+            <Navbar />
+          </Suspense>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/service" element={<Service />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
         </Router>
       </TenantInitializer>
     </Provider>
