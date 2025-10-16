@@ -146,3 +146,78 @@ textarea:focus {
   gap: 0.8rem;
   margin-top: 1rem;
 }
+
+.verifyButton {
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  margin-top: 0.5rem;
+  color: white;
+}
+
+.verifyButton:hover {
+  background: linear-gradient(135deg, #66bb6a, #81c784);
+  transform: translateY(-2px);
+}
+
+/* Mobile horizontal scroll for testimonials */
+@media (max-width: 768px) {
+  .testimonialGrid {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+  }
+
+  .testimonialCard {
+    min-width: 280px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .testimonialGrid::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .testimonialGrid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .testimonialGrid::-webkit-scrollbar-thumb {
+    background: #fcd600;
+    border-radius: 10px;
+  }
+
+  .testimonialGrid::-webkit-scrollbar-thumb:hover {
+    background: #ffd633;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonialsContainer {
+    padding: 2rem 1rem;
+  }
+
+  .testimonialCard {
+    min-width: 250px;
+    padding: 1.2rem;
+  }
+
+  .averageRatingDisplay {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .starDisplay .star {
+    font-size: 1.5rem;
+  }
+}

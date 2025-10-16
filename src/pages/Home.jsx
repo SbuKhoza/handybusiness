@@ -11,6 +11,7 @@ import Navbar from "../components/Navbar"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import "./pagestyling/Home.css"
+import NewsLetter from "../components/pagescomponents/NewsLetter"
 
 function Home() {
   const { tenantId } = useSelector((state) => state.tenant)
@@ -159,6 +160,8 @@ function Home() {
       <div className="homeTestimonials">
         <Testimonials />
       </div>
+
+      <NewsLetter />
 
       <Footer />
     </div>
