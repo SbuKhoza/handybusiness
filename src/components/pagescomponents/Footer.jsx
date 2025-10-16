@@ -6,7 +6,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import "./Footer.css";
 
 // ✅ Use React Icons instead of SVGs
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { FaFacebookF, FaXTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 
 function Footer() {
   const { tenantId } = useSelector((state) => state.tenant);
@@ -92,9 +92,9 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon"
-                aria-label="Twitter"
+                aria-label="X (Twitter)"
               >
-                <FaTwitter />
+                <FaXTwitter />
               </a>
             )}
             {footerData.instagram && (
