@@ -157,7 +157,7 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link to="/services" style={{ color: currentColors.links }}>
+              <Link to="/service" style={{ color: currentColors.links }}>
                 Services
               </Link>
             </li>
@@ -219,7 +219,7 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link to="/services" onClick={handleLinkClick}>
+              <Link to="/service" onClick={handleLinkClick}>
                 Services
               </Link>
             </li>
