@@ -4,15 +4,19 @@
   justify-content: center;
   padding-top: 2rem;
   margin-top: 2rem;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .footer-container {
   width: 100%;
-  margin: 1.5rem;
+  max-width: 1200px; /* Optional: constrain max width for better readability */
+  margin: 0 auto; /* Center the container */
+  padding: 1.5rem; /* Changed from margin to padding */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
   padding-bottom: 2rem;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
 /* Footer Columns */
@@ -59,7 +63,7 @@
 .social-icon:hover {
   transform: translateY(-4px) scale(1.05);
   background-color: rgba(255, 255, 255, 0.25);
-  color: #f4b400; /* You can match this to your accentColor */
+  color: #f4b400;
 }
 
 /* Footer Links */
@@ -107,10 +111,13 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2rem;
   margin: 0;
+  box-sizing: border-box; /* Ensure padding doesn't cause overflow */
 }
 
 .footer-bottom-container {
   width: 100%;
+  max-width: 1200px; /* Match footer-container max-width */
+  margin: 0 auto; /* Center the container */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -121,7 +128,6 @@
 .copyright {
   margin: 0;
   font-size: 0.9rem;
-  /* background-color: rgba(0, 0, 0, 0.16); */
 }
 
 .copyright a {
@@ -161,6 +167,11 @@
   .footer-container {
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: 1rem; /* Reduce padding on smaller screens */
+  }
+
+  .footer-bottom {
+    padding: 1.5rem 1rem; /* Reduce padding on smaller screens */
   }
 
   .footer-bottom-container {
