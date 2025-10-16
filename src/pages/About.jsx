@@ -11,6 +11,8 @@ function About() {
     title: "",
     subtitle: "",
     bannerImage: "",
+    headerBgColor: "",
+    titleColor: "#ffffff",
   })
   const [sections, setSections] = useState([])
 
@@ -21,11 +23,16 @@ function About() {
     const unsubHeader = onSnapshot(headerRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data()
+        console.log("About header data received:", data) // Debug log
         setAboutHeader({
           title: data.title || "",
           subtitle: data.subtitle || "",
           bannerImage: data.bannerImage || "",
+          headerBgColor: data.headerBgColor || "#667eea",
+          titleColor: data.titleColor || "#ffffff",
         })
+      } else {
+        console.log("No aboutHeader document exists yet") // Debug log
       }
     })
 
@@ -47,22 +54,43 @@ function About() {
 
   return (
     <div className="about-container">
+      {/* Debug info - remove after testing */}
+      {console.log("Rendering with colors:", {
+        headerBgColor: aboutHeader.headerBgColor,
+        titleColor: aboutHeader.titleColor,
+        hasBanner: !!aboutHeader.bannerImage
+      })}
+      
       {/* Banner Section */}
       {aboutHeader.bannerImage && (
         <div className="about-banner">
           <img src={aboutHeader.bannerImage} alt="About banner" className="banner-img" />
           <div className="banner-overlay">
-            <h1 className="banner-title">{aboutHeader.title || "About Us"}</h1>
-            <p className="banner-subtitle">{aboutHeader.subtitle}</p>
+            <h1 className="banner-title" style={{ color: aboutHeader.titleColor }}>
+              {aboutHeader.title || "About Us"}
+            </h1>
+            <p className="banner-subtitle" style={{ color: aboutHeader.titleColor }}>
+              {aboutHeader.subtitle}
+            </p>
           </div>
         </div>
       )}
 
       {/* Header without banner */}
       {!aboutHeader.bannerImage && (
-        <div className="about-header">
-          <h1 className="about-title">{aboutHeader.title || "About Us"}</h1>
-          <p className="about-subtitle">{aboutHeader.subtitle}</p>
+        <div 
+          className="about-header" 
+          style={{ 
+            backgroundColor: aboutHeader.headerBgColor,
+            background: aboutHeader.headerBgColor 
+          }}
+        >
+          <h1 className="about-title" style={{ color: aboutHeader.titleColor }}>
+            {aboutHeader.title || "About Us"}
+          </h1>
+          <p className="about-subtitle" style={{ color: aboutHeader.titleColor }}>
+            {aboutHeader.subtitle}
+          </p>
         </div>
       )}
 
