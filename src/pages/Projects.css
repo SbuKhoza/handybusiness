@@ -1,0 +1,367 @@
+/* Projects Container */
+.projects-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6rem 2rem 4rem;
+  min-height: 100vh;
+}
+
+/* Header */
+.projects-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.projects-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.projects-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Controls */
+.projects-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-control label {
+  font-weight: 600;
+  color: #555;
+}
+
+.sort-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: white;
+}
+
+.projects-count {
+  font-weight: 600;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Projects Grid - Square Style */
+.projects-grid.square-style {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.square-style .project-image-wrapper {
+  aspect-ratio: 1 / 1;
+}
+
+/* Projects Grid - Portrait Style (like appgallery) */
+.projects-grid.portrait-style {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.portrait-style .project-image-wrapper {
+  aspect-ratio: 3 / 4;
+}
+
+/* Project Item */
+.project-item {
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.project-image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #e0e0e0;
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-item:hover .project-image {
+  transform: scale(1.05);
+}
+
+/* Overlay */
+.project-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.project-item:hover .project-overlay {
+  transform: translateY(0);
+}
+
+.project-overlay h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.project-date {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Modal */
+.project-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  max-width: 1000px;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.modal-close:hover {
+  background: white;
+  transform: rotate(90deg);
+}
+
+.modal-image {
+  width: 100%;
+  max-height: 60vh;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal-info {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.modal-info h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.modal-date {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.modal-description {
+  color: #555;
+  line-height: 1.7;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Loading & Empty States */
+.projects-loading,
+.no-projects {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .projects-grid.square-style {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .projects-grid.portrait-style {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .projects-container {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .projects-header h1 {
+    font-size: 2rem;
+  }
+
+  .projects-controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .sort-control {
+    width: 100%;
+  }
+
+  .sort-select {
+    flex: 1;
+  }
+
+  .projects-count {
+    text-align: center;
+  }
+
+  .projects-grid.square-style {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .projects-grid.portrait-style {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .modal-content {
+    max-height: 95vh;
+  }
+
+  .modal-info {
+    padding: 1.5rem;
+  }
+
+  .modal-info h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .projects-container {
+    padding: 4.5rem 1rem 2rem;
+  }
+
+  .projects-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .projects-subtitle {
+    font-size: 1rem;
+  }
+
+  .projects-grid.square-style,
+  .projects-grid.portrait-style {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-overlay {
+    transform: translateY(0);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
+  }
+
+  .modal-image {
+    max-height: 50vh;
+  }
+
+  .modal-info {
+    padding: 1.25rem;
+  }
+
+  .modal-info h2 {
+    font-size: 1.25rem;
+  }
+
+  .modal-description {
+    font-size: 0.95rem;
+  }
+}
