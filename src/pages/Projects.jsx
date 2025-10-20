@@ -15,6 +15,7 @@ function Projects() {
   });
   const [currentSort, setCurrentSort] = useState('date-desc');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
   // Load gallery settings
@@ -64,9 +65,11 @@ function Projects() {
     const sorted = [...projects].sort((a, b) => {
       switch (currentSort) {
         case 'date-desc':
-          return new Date(b.date) - new Date(a.date);
+          return (b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0)) - 
+                 (a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0));
         case 'date-asc':
-          return new Date(a.date) - new Date(b.date);
+          return (a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0)) - 
+                 (b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0));
         case 'title-asc':
           return a.title.localeCompare(b.title);
         case 'title-desc':
@@ -81,13 +84,34 @@ function Projects() {
   // Open modal
   const openModal = (project) => {
     setSelectedProject(project);
+    setCurrentImageIndex(0);
     document.body.style.overflow = 'hidden';
   };
 
   // Close modal
   const closeModal = () => {
     setSelectedProject(null);
+    setCurrentImageIndex(0);
     document.body.style.overflow = 'unset';
+  };
+
+  // Navigate images
+  const nextImage = (e) => {
+    e.stopPropagation();
+    if (selectedProject && selectedProject.imageUrls) {
+      setCurrentImageIndex((prev) => 
+        prev === selectedProject.imageUrls.length - 1 ? 0 : prev + 1
+      );
+    }
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    if (selectedProject && selectedProject.imageUrls) {
+      setCurrentImageIndex((prev) => 
+        prev === 0 ? selectedProject.imageUrls.length - 1 : prev - 1
+      );
+    }
   };
 
   // Close modal on escape key
@@ -153,18 +177,25 @@ function Projects() {
             >
               <div className="project-image-wrapper">
                 <img
-                  src={project.imageUrl}
+                  src={project.imageUrls && project.imageUrls[0] ? project.imageUrls[0] : 'https://via.placeholder.com/400'}
                   alt={project.title}
                   className="project-image"
                 />
+                {project.imageUrls && project.imageUrls.length > 1 && (
+                  <div className="image-count-badge">
+                    {project.imageUrls.length} photos
+                  </div>
+                )}
                 <div className="project-overlay">
                   <h3>{project.title}</h3>
                   <p className="project-date">
-                    {new Date(project.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                    {project.createdAt?.toDate ? 
+                      project.createdAt.toDate().toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      }) : 'N/A'
+                    }
                   </p>
                 </div>
               </div>
@@ -181,16 +212,42 @@ function Projects() {
               ×
             </button>
             <div className="modal-image">
-              <img src={selectedProject.imageUrl} alt={selectedProject.title} />
+              {selectedProject.imageUrls && selectedProject.imageUrls.length > 0 ? (
+                <>
+                  <img 
+                    src={selectedProject.imageUrls[currentImageIndex]} 
+                    alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`} 
+                  />
+                  {selectedProject.imageUrls.length > 1 && (
+                    <>
+                      <button className="modal-nav modal-prev" onClick={prevImage}>
+                        ‹
+                      </button>
+                      <button className="modal-nav modal-next" onClick={nextImage}>
+                        ›
+                      </button>
+                      <div className="modal-image-counter">
+                        {currentImageIndex + 1} / {selectedProject.imageUrls.length}
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#999' }}>
+                  No images available
+                </div>
+              )}
             </div>
             <div className="modal-info">
               <h2>{selectedProject.title}</h2>
               <p className="modal-date">
-                {new Date(selectedProject.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+                {selectedProject.createdAt?.toDate ? 
+                  selectedProject.createdAt.toDate().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  }) : 'N/A'
+                }
               </p>
               {selectedProject.description && (
                 <p className="modal-description">{selectedProject.description}</p>
