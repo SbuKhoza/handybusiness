@@ -132,6 +132,33 @@
   aspect-ratio: 1 / 1;
 }
 
+/* Projects Grid - Masonry Style (Mixed portrait & landscape) */
+.projects-grid.masonry-style {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-rows: 200px;
+  gap: 1.5rem;
+}
+
+/* Masonry item sizes based on orientation */
+.masonry-style .project-item.portrait {
+  grid-row: span 2;
+}
+
+.masonry-style .project-item.landscape {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.masonry-style .project-item.square {
+  grid-row: span 1;
+}
+
+.masonry-style .project-image-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
 /* Projects Grid - Portrait Style (like appgallery) */
 .projects-grid.portrait-style {
   display: grid;
@@ -343,6 +370,12 @@
     gap: 1.5rem;
   }
 
+  .projects-grid.masonry-style {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-rows: 180px;
+    gap: 1.25rem;
+  }
+
   .projects-grid.portrait-style {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.25rem;
@@ -381,6 +414,12 @@
     gap: 1rem;
   }
 
+  .projects-grid.masonry-style {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-auto-rows: 150px;
+    gap: 1rem;
+  }
+
   .projects-grid.portrait-style {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1rem;
@@ -413,9 +452,14 @@
   }
 
   .projects-grid.square-style,
+  .projects-grid.masonry-style,
   .projects-grid.portrait-style {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .masonry-style .project-item.landscape {
+    grid-column: span 1;
   }
 
   .project-overlay {

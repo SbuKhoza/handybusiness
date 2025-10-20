@@ -17,6 +17,7 @@ function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [imageOrientations, setImageOrientations] = useState({});
 
   // Load gallery settings
   useEffect(() => {
@@ -54,6 +55,22 @@ function Projects() {
         ...doc.data()
       }));
       setProjects(projectsData);
+      
+      // Detect image orientations for masonry layout
+      projectsData.forEach(project => {
+        if (project.imageUrls && project.imageUrls[0]) {
+          const img = new Image();
+          img.onload = () => {
+            setImageOrientations(prev => ({
+              ...prev,
+              [project.id]: img.width > img.height ? 'landscape' : 
+                           img.width < img.height ? 'portrait' : 'square'
+            }));
+          };
+          img.src = project.imageUrls[0];
+        }
+      });
+      
       setLoading(false);
     });
 
@@ -168,11 +185,11 @@ function Projects() {
           <p>No projects available at the moment.</p>
         </div>
       ) : (
-        <div className={`projects-grid ${gallerySettings.displayStyle === 'portrait' ? 'portrait-style' : 'square-style'}`}>
+        <div className={`projects-grid ${gallerySettings.displayStyle === 'masonry' ? 'masonry-style' : 'square-style'}`}>
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="project-item"
+              className={`project-item ${gallerySettings.displayStyle === 'masonry' ? imageOrientations[project.id] || 'square' : ''}`}
               onClick={() => openModal(project)}
             >
               <div className="project-image-wrapper">
