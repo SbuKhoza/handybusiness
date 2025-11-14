@@ -100,6 +100,7 @@ function Projects() {
 
   // Open modal
   const openModal = (project) => {
+    console.log('Opening modal for project:', project.title);
     setSelectedProject(project);
     setCurrentImageIndex(0);
     document.body.style.overflow = 'hidden';
@@ -107,52 +108,60 @@ function Projects() {
 
   // Close modal
   const closeModal = () => {
+    console.log('Closing modal');
     setSelectedProject(null);
     setCurrentImageIndex(0);
     document.body.style.overflow = 'unset';
   };
 
-  // Navigate images
+  // Navigate images - Fixed version
   const nextImage = (e) => {
-    e.stopPropagation();
-    if (selectedProject && selectedProject.imageUrls) {
+    if (e) e.stopPropagation();
+    
+    if (selectedProject && selectedProject.imageUrls && selectedProject.imageUrls.length > 1) {
       setCurrentImageIndex((prev) => {
         const newIndex = prev === selectedProject.imageUrls.length - 1 ? 0 : prev + 1;
-        console.log('[v0] Next image clicked, old index:', prev, 'new index:', newIndex);
+        console.log('Next image - Previous index:', prev, 'New index:', newIndex);
         return newIndex;
       });
+    } else {
+      console.log('Cannot navigate - no images or only one image');
     }
   };
 
   const prevImage = (e) => {
-    e.stopPropagation();
-    if (selectedProject && selectedProject.imageUrls) {
+    if (e) e.stopPropagation();
+    
+    if (selectedProject && selectedProject.imageUrls && selectedProject.imageUrls.length > 1) {
       setCurrentImageIndex((prev) => {
         const newIndex = prev === 0 ? selectedProject.imageUrls.length - 1 : prev - 1;
-        console.log('[v0] Previous image clicked, old index:', prev, 'new index:', newIndex);
+        console.log('Previous image - Previous index:', prev, 'New index:', newIndex);
         return newIndex;
       });
+    } else {
+      console.log('Cannot navigate - no images or only one image');
     }
   };
 
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyboard = (e) => {
       if (!selectedProject) return;
       
+      console.log('Key pressed:', e.key);
+      
       if (e.key === 'Escape') {
         closeModal();
       } else if (e.key === 'ArrowRight') {
-        const fakeEvent = { stopPropagation: () => {} };
-        nextImage(fakeEvent);
+        nextImage(null);
       } else if (e.key === 'ArrowLeft') {
-        const fakeEvent = { stopPropagation: () => {} };
-        prevImage(fakeEvent);
+        prevImage(null);
       }
     };
 
     window.addEventListener('keydown', handleKeyboard);
     return () => window.removeEventListener('keydown', handleKeyboard);
-  }, [selectedProject, currentImageIndex]);
+  }, [selectedProject]); // Removed currentImageIndex from dependencies
 
   if (loading) {
     return (
@@ -229,27 +238,30 @@ function Projects() {
               {selectedProject.imageUrls && selectedProject.imageUrls.length > 0 ? (
                 <>
                   <img 
-                    src={selectedProject.imageUrls[currentImageIndex] || "/placeholder.svg"} 
+                    key={currentImageIndex} // Added key to force re-render
+                    src={selectedProject.imageUrls[currentImageIndex]} 
                     alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`} 
                   />
-                  <button 
-                    className="modal-nav modal-prev" 
-                    onClick={prevImage}
-                    aria-label="Previous image"
-                  >
-                    ←
-                  </button>
-                  <button 
-                    className="modal-nav modal-next" 
-                    onClick={nextImage}
-                    aria-label="Next image"
-                  >
-                    →
-                  </button>
                   {selectedProject.imageUrls.length > 1 && (
-                    <div className="modal-image-counter">
-                      {currentImageIndex + 1} / {selectedProject.imageUrls.length}
-                    </div>
+                    <>
+                      <button 
+                        className="modal-nav modal-prev" 
+                        onClick={prevImage}
+                        aria-label="Previous image"
+                      >
+                        ←
+                      </button>
+                      <button 
+                        className="modal-nav modal-next" 
+                        onClick={nextImage}
+                        aria-label="Next image"
+                      >
+                        →
+                      </button>
+                      <div className="modal-image-counter">
+                        {currentImageIndex + 1} / {selectedProject.imageUrls.length}
+                      </div>
+                    </>
                   )}
                 </>
               ) : (
