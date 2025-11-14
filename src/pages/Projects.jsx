@@ -116,30 +116,43 @@ function Projects() {
   const nextImage = (e) => {
     e.stopPropagation();
     if (selectedProject && selectedProject.imageUrls) {
-      setCurrentImageIndex((prev) => 
-        prev === selectedProject.imageUrls.length - 1 ? 0 : prev + 1
-      );
+      setCurrentImageIndex((prev) => {
+        const newIndex = prev === selectedProject.imageUrls.length - 1 ? 0 : prev + 1;
+        console.log('[v0] Next image clicked, old index:', prev, 'new index:', newIndex);
+        return newIndex;
+      });
     }
   };
 
   const prevImage = (e) => {
     e.stopPropagation();
     if (selectedProject && selectedProject.imageUrls) {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? selectedProject.imageUrls.length - 1 : prev - 1
-      );
+      setCurrentImageIndex((prev) => {
+        const newIndex = prev === 0 ? selectedProject.imageUrls.length - 1 : prev - 1;
+        console.log('[v0] Previous image clicked, old index:', prev, 'new index:', newIndex);
+        return newIndex;
+      });
     }
   };
 
-  // Close modal on escape key
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') closeModal();
+    const handleKeyboard = (e) => {
+      if (!selectedProject) return;
+      
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowRight') {
+        const fakeEvent = { stopPropagation: () => {} };
+        nextImage(fakeEvent);
+      } else if (e.key === 'ArrowLeft') {
+        const fakeEvent = { stopPropagation: () => {} };
+        prevImage(fakeEvent);
+      }
     };
 
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, []);
+    window.addEventListener('keydown', handleKeyboard);
+    return () => window.removeEventListener('keydown', handleKeyboard);
+  }, [selectedProject, currentImageIndex]);
 
   if (loading) {
     return (
@@ -158,25 +171,9 @@ function Projects() {
         </p>
       </div>
 
-      {/* Sort Controls */}
-      <div className="projects-controls">
-        <div className="sort-control">
-          <label htmlFor="sort-select">Sort by:</label>
-          <select
-            id="sort-select"
-            value={currentSort}
-            onChange={(e) => setCurrentSort(e.target.value)}
-            className="sort-select"
-          >
-            <option value="date-desc">Date (Newest First)</option>
-            <option value="date-asc">Date (Oldest First)</option>
-            <option value="title-asc">Title (A-Z)</option>
-            <option value="title-desc">Title (Z-A)</option>
-          </select>
-        </div>
-        <div className="projects-count">
-          {filteredProjects.length} {filteredProjects.length === 1 ? 'Project' : 'Projects'}
-        </div>
+      {/* Projects Count */}
+      <div className="projects-count">
+        {filteredProjects.length} {filteredProjects.length === 1 ? 'Project' : 'Projects'}
       </div>
 
       {/* Projects Grid */}
@@ -232,21 +229,27 @@ function Projects() {
               {selectedProject.imageUrls && selectedProject.imageUrls.length > 0 ? (
                 <>
                   <img 
-                    src={selectedProject.imageUrls[currentImageIndex]} 
+                    src={selectedProject.imageUrls[currentImageIndex] || "/placeholder.svg"} 
                     alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`} 
                   />
+                  <button 
+                    className="modal-nav modal-prev" 
+                    onClick={prevImage}
+                    aria-label="Previous image"
+                  >
+                    ←
+                  </button>
+                  <button 
+                    className="modal-nav modal-next" 
+                    onClick={nextImage}
+                    aria-label="Next image"
+                  >
+                    →
+                  </button>
                   {selectedProject.imageUrls.length > 1 && (
-                    <>
-                      <button className="modal-nav modal-prev" onClick={prevImage}>
-                        ‹
-                      </button>
-                      <button className="modal-nav modal-next" onClick={nextImage}>
-                        ›
-                      </button>
-                      <div className="modal-image-counter">
-                        {currentImageIndex + 1} / {selectedProject.imageUrls.length}
-                      </div>
-                    </>
+                    <div className="modal-image-counter">
+                      {currentImageIndex + 1} / {selectedProject.imageUrls.length}
+                    </div>
                   )}
                 </>
               ) : (
@@ -257,18 +260,6 @@ function Projects() {
             </div>
             <div className="modal-info">
               <h2>{selectedProject.title}</h2>
-              <p className="modal-date">
-                {selectedProject.createdAt?.toDate ? 
-                  selectedProject.createdAt.toDate().toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  }) : 'N/A'
-                }
-              </p>
-              {selectedProject.description && (
-                <p className="modal-description">{selectedProject.description}</p>
-              )}
             </div>
           </div>
         </div>
