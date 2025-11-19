@@ -1,5 +1,4 @@
-"use client"
-
+//business app
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Provider } from "react-redux"
 import { lazy, Suspense, useEffect, memo } from "react"
